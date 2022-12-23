@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="info">
+    <Properties>
+        <property name="LOG_PATTERN" value="%d{yy-MM-dd HH:mm:ss} %-5level [%thread] [%logger{0}:%line] - %msg%n"/> <!-- 로그 패턴 -->
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleLog" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+        </Console>
+        <RollingFile name="FileLog"
+                     fileName="/data/log/mw/mw.log"
+                     filePattern="/data/log/mw/mw-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="30000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="500" fileIndex="min" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="ConsoleLog" />
+            <AppenderRef ref="FileLog" />
+        </Root>
+        <logger name="omni.omniconnector" additivity="false" >
+            <AppenderRef ref="ConsoleLog" level="debug"/>
+            <AppenderRef ref="FileLog" level="debug" />
+        </logger>
+    </Loggers>
+</Configuration>

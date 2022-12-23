@@ -1,1 +1,16 @@
+server:
+  port: 8080
 
+hiqri:
+  ap:
+    baseUrl: http://localhost
+    endpoint: /ap
+
+naver:
+  authorization: pAWCuHiyT8O5GKX7xDkz
+kakao:
+  apiKey: 6d462d48-cb96-4376-9344-0b8335b3b259
+  plusFriendId: '@mtc5azk1njd0y3p'
+meta:
+  fbAccessToken: EAAGSZCPZAAhNUBAHPJH6iFJRa8ZAYFAPRZCB7YaMhLyXf4R6MLEiTtFb5KgSLwlN6YXuEO9uGaaCq5XW4zTpsJRwvYt2HNIvKD4CzW06uqivoZAvZB8Rm64qgniuePzYsOU00PSkdHTVEiZAWpLFhoEmnChYNaZBFZAHFmUs4R6vIeYUR6Dg9GshOLvpWjE5j9WWZC4QGwZAXMMNQZDZD
+  IgAccessToken: EAAGSZCPZAAhNUBAPKLGVn0JX5RZBuzmGKDeO3svXhUmAYwVhGxpI8McZB3R6QC7nRKZCW69TbTMXp7qUG3SbKu2swBD71VAK5eibkInTGk4bLvVUocTEtL5ALOKZA5ZB2de0iaSSmT7BxmDBAgZBdM5IXtwiKiCJue4DbSrTAOAJHB5r0XGWElujTZCbdnNDjLRAatTESjLEthAZDZD

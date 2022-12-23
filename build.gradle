@@ -22,16 +22,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    runtimeOnly 'org.postgresql:postgresql'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
     //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    //websocket
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     //parser
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
@@ -40,8 +34,18 @@ dependencies {
     //httpclient
     implementation 'org.apache.httpcomponents:httpclient'
 
-    //log4j
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    implementation 'org.apache.httpcomponents:httpmime:4.5.13' // httpmime(이미지 전송 처리, @meata)
+
+    //Log4J2 해킹 취약점으로 2.15 버전으로 업데이트
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'org.apache.logging.log4j') {
+                details.useVersion '2.15.0'
+            }
+        }
+    }
 }
 
 tasks.named('test') {
