@@ -1,6 +1,6 @@
 package aicc.omni.omniconnector.util;
 
-import aicc.omni.omniconnector.model.ApWsDto;
+import aicc.omni.omniconnector.model.ap.ApWsDto;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

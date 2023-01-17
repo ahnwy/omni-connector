@@ -1,7 +1,7 @@
 package aicc.omni.omniconnector.service.meta;
 
 
-import aicc.omni.omniconnector.model.ApWsDto;
+import aicc.omni.omniconnector.model.ap.ApWsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -13,17 +13,12 @@ import java.util.Map;
 public class MetaHttpMsgBuilder {
 
     public static String metaHttpTextMsg(ApWsDto apWsDto) throws JsonProcessingException {
-
+        log.info("apWsDto >>> "+apWsDto);
         Map<String, Object> msgMap = new HashMap<>();
-
         Map<String, String> recipient = new HashMap<>();
-        recipient.put("id", apWsDto.getCustomer());
-
-
+        recipient.put("id", apWsDto.getPlatformID());
         Map<String, String> message = new HashMap<>();
         message.put("text", apWsDto.getMsg());
-
-
         msgMap.put("recipient", recipient);
         msgMap.put("message", message);
 

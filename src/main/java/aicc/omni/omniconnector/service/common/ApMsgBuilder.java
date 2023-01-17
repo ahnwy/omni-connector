@@ -2,6 +2,7 @@ package aicc.omni.omniconnector.service.naver;
 
 import aicc.omni.omniconnector.model.ApMsgSeqDto;
 import aicc.omni.omniconnector.model.naver.NaverWhMsgDto;
+import aicc.omni.omniconnector.util.NAVERHTTPUTIL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,8 +10,14 @@ import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import static aicc.omni.omniconnector.handler.WebsocketClientHandler.channelMap;
+import static aicc.omni.omniconnector.handler.WebsocketClientHandler.whUserMap;
 
 @Log4j2
 @Component
@@ -30,6 +37,7 @@ public class NaverSocketMsgBuilder {
         msgMap.put("schema", "ap"); //고정
         msgMap.put("corpCode", "CS"); //고정
         msgMap.put("msgId", naverWhMsgDto.getMessageId());
+        msgMap.put("channelSeq", naverWhMsgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msgMap);
@@ -40,7 +48,7 @@ public class NaverSocketMsgBuilder {
         Map<String, String> msgMap = new HashMap<>(9);
 
         msgMap.put("mode", "total"); // 고정
-        msgMap.put("msgSeq", naverWhMsgDto.getUser());
+        msgMap.put("msgSeq", whUserMap.get(naverWhMsgDto.getUser()));
         msgMap.put("msg", naverWhMsgDto.getTextContent().getText());
         msgMap.put("msgContentType", "text"); // 고정
         msgMap.put("msgWrtTime", naverWhMsgDto.getCurrentTime());
@@ -48,6 +56,7 @@ public class NaverSocketMsgBuilder {
         msgMap.put("schema", "ap"); //고정
         msgMap.put("corpCode", "CS"); //고정
         msgMap.put("msgId", naverWhMsgDto.getMessageId());
+        msgMap.put("channelSeq", naverWhMsgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msgMap);
@@ -55,24 +64,35 @@ public class NaverSocketMsgBuilder {
 
     public static String apWebSocketImageMsg(NaverWhMsgDto naverWhMsgDto) throws Exception {
 
-        Map<String, Object> msg = new HashMap<>(13);
+        String imageUrl = naverWhMsgDto.getImageContent().getImageUrl();
 
-//        msg.put("mode", "total"); // 고정
-//        msg.put("msgSeq", naverWhMsgDto.getUser());
-//        msg.put("msg", naverWhMsgDto.getImageContent().getImageUrl()); // filePath와 동일 내용임(AP 요청사항)
-//        msg.put("msgContentType", "image"); // 고정
-//        msg.put("filePath", naverWhMsgDto.getImageContent().getImageUrl());
-//        msg.put("fileName", url.substring(url.lastIndexOf('/') + 1, url.length());
-//        msg.put("fileSize", whMsgDto.getFileSize());
-//        msg.put("msgWrtTime", URLDecoder.decode(null, "EUC-KR"));
-//        msg.put("channelSeq", "1");
-//        msg.put("msgWrtId", "1");
-//        msg.put("schema", "ap"); //고정
-//        msg.put("corpCode", "CS"); //고정
-//        msg.put("msgId", naverWhMsgDto.getMessageId());
+        // fileVolume(byte)
+        HttpURLConnection conn = null;
+        conn = (HttpURLConnection) new URL(imageUrl).openConnection();
+        conn.setInstanceFollowRedirects(false);
+        String fileBytes = conn.getHeaderField("Content-Length");
 
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msg);
+        if (Long.parseLong(fileBytes) < 10485760) {
+            Map<String, Object> msgMap = new HashMap<>(13);
+            msgMap.put("mode", "total"); // 고정
+            msgMap.put("msgSeq", whUserMap.get(naverWhMsgDto.getUser()));
+            msgMap.put("msg", naverWhMsgDto.getImageContent().getImageUrl());
+            msgMap.put("msgContentType", "image"); // 고정
+            msgMap.put("filePath", naverWhMsgDto.getImageContent().getImageUrl());
+            msgMap.put("fileName", URLDecoder.decode(imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.length()), "EUC-KR"));
+            msgMap.put("fileSize", Long.parseLong(fileBytes));
+            msgMap.put("msgWrtTime", naverWhMsgDto.getCurrentTime());
+            msgMap.put("channelSeq", naverWhMsgDto.getChannel());
+            msgMap.put("msgWrtId", "1");
+            msgMap.put("schema", "ap"); //고정
+            msgMap.put("corpCode", "CS"); //고정
+            msgMap.put("msgId", naverWhMsgDto.getMessageId());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msgMap);
+        } else {
+            NAVERHTTPUTIL.sendApi(NaverApiMsgBuilder.sendTextMsg(naverWhMsgDto, "image"));
+            return "";
+        }
     }
 
     public static String apWebSocketEndMsg(NaverWhMsgDto naverWhMsgDto) throws Exception {
@@ -80,10 +100,10 @@ public class NaverSocketMsgBuilder {
         Map<String, String> msgMap = new HashMap<>(14);
 
         msgMap.put("mode", "total");
-        msgMap.put("msgSeq", naverWhMsgDto.getUser());
+        msgMap.put("msgSeq", whUserMap.get(naverWhMsgDto.getUser()));
         msgMap.put("msg", "");
         msgMap.put("msgContentType", "text"); // 고정
-        msgMap.put("channelSeq", "2");
+        msgMap.put("channelSeq", channelMap.get(naverWhMsgDto.getUser()));
         msgMap.put("customer", naverWhMsgDto.getUser());
         msgMap.put("status", "종료");
         msgMap.put("endDate", naverWhMsgDto.getCurrentTime()); //고정
@@ -115,7 +135,7 @@ public class NaverSocketMsgBuilder {
         // msgSeq : 채팅방번호 (서버에서 할당)
         obj.addProperty("msgSeq", apMsgSeqDto.getMsgSeq());
         // 인입채널 | 1.kakao, 2.naver, 3.facebook, 4.instagram, 5.webchat, 6.email
-        obj.addProperty("channelSeq", apMsgSeqDto.getPlatformID().substring(0, 1));
+        obj.addProperty("channelSeq", apMsgSeqDto.getChannelSeq());
         // 채팅방모드
         obj.addProperty("status", "대기");
         // 최초 접속 시각
@@ -140,7 +160,7 @@ public class NaverSocketMsgBuilder {
         obj.addProperty("mobilePhone", "");
         // 고객이메일주소 (고객입력)
         obj.addProperty("email", "");
-
+        log.info("inset Data >>> "+obj);
         return gson.toJson(obj);
     }
 }
