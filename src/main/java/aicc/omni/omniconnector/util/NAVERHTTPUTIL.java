@@ -1,7 +1,6 @@
 package aicc.omni.omniconnector.util;
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,11 +12,8 @@ import java.net.URL;
 @Log4j2
 public class NAVERHTTPUTIL {
 
-    @Value("${naver.authorization}")
-    public static String authorization;
-
     public static void sendApi(String jsonOutput) {
-
+        log.info("Naver Util >>> "+ jsonOutput);
         HttpURLConnection conn;
 
         try {
@@ -27,7 +23,7 @@ public class NAVERHTTPUTIL {
             // type의 경우 POST, GET, PUT, DELETE 가능
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            conn.setRequestProperty("Authorization", authorization);
+            conn.setRequestProperty("Authorization", "dToTC2yiTeWRRYJqsDIf");
 
             conn.setDoOutput(true);
 

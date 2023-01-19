@@ -1,4 +1,4 @@
-package aicc.omni.omniconnector.model;
+package aicc.omni.omniconnector.model.ap;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +36,7 @@ public class ApWsDto {
     private String mobilePhone;
     private String email;
     private String msgWrtTime;
+    private String msgWrtId;
 
     private String filePath;       // 파일(이미지) 경로
     private String fileName;       // 파일(이미지) 이름

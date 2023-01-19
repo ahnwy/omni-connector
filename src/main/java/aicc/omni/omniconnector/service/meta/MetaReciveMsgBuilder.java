@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
-public class MetaHttpMsgBuilder {
+public class MetaReciveMsgBuilder {
 
     public static String metaHttpTextMsg(ApWsDto apWsDto) throws JsonProcessingException {
         log.info("apWsDto >>> "+apWsDto);

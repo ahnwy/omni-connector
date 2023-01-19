@@ -18,13 +18,13 @@ public class MetaApMsgBuilder {
         msgMap.put("platformID", msgDto.getPlatformId());
         msgMap.put("msg", "VISIT"); // 고정
         msgMap.put("openFlag", "newEvent");
-        msgMap.put("userName", msgDto.getEntry().get(0).getMessaging().get(0)
-                .getSender().getSenderId());
+        msgMap.put("userName", msgDto.getEntry().get(0).getMessaging().get(0).getSender().getSenderId());
         msgMap.put("userPhone", "1"); //고정
         msgMap.put("userEmail", "1"); //고정
         msgMap.put("schema", "ap"); //고정
         msgMap.put("corpCode", "CS"); //고정
         msgMap.put("msgId", msgDto.getEntry().get(0).getMessaging().get(0).getMessage().getMid());
+        msgMap.put("channelSeq", msgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msgMap);
@@ -74,39 +74,12 @@ public class MetaApMsgBuilder {
         msg.put("msgSeq", WebsocketClientHandler.whUserMap.get(msgDto.getPlatformId()));
         msg.put("msgContentType", "text"); // 고정
         msg.put("msgWrtTime", msgDto.getFormattedDate());
-        msg.put("msgWrtId", msgDto.getMsgWrtId());
+        msg.put("msgWrtId", "1");
         msg.put("schema", "ap"); //고정
         msg.put("corpCode", "CS"); //고정
         msg.put("msgId", msgDto.getEntry().get(0).getMessaging().get(0).getMessage().getMid());
-
-        // 고객이 잘못된 형식의 컨텐츠를 전송할 경우 상담사에게도 관련 내용 전달
-        if (msgDto.getProcessing() == "E") {
-            String errMsg1 = "고객이 지원하지 않는 형식의 컨텐츠";
-            String errMsg2 = "를 전송 시도하였습니다.";
-            String errSpec = null;
-
-            switch (msgDto.getMessageType()) {
-                case "text":
-                    errSpec = "(1,000자 이상의 텍스트)";
-                    break;
-                case "image":
-                    errSpec = "(10MB 이상의 이미지)";
-                    break;
-                case "audio":
-                    errSpec = "(음성 메시지)";
-                    break;
-                case "location":
-                    errSpec = "(위치 정보)";
-                default:
-                    errSpec = "";
-                    break;
-            }
-            String errMsg = errMsg1 + errSpec + errMsg2;
-            msg.put("msg", errMsg);
-
-        } else if (msgDto.getProcessing() == "Y") {
-            msg.put("msg", msgDto.getEntry().get(0).getMessaging().get(0).getMessage().getText());
-        }
+        msg.put("msg", msgDto.getEntry().get(0).getMessaging().get(0).getMessage().getText());
+        msg.put("platformID", msgDto.getPlatformId());
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msg);

@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.URL;
 
 @Log4j2
-public class MetaHttpUtil {
+public class METAHTTPUTIL {
 
     @Value("${meta.fbAccessToken}")
     static String fbAccessToken;
@@ -33,7 +33,7 @@ public class MetaHttpUtil {
             conn.setDoOutput(true);
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-//            log.info("▶▶▶ HTTPS_CONNECTION wrote : {}", json.toString());
+            log.info("▶▶▶ HTTPS_CONNECTION wrote : {}", json.toString());
             bw.write(json.toString());
             bw.flush();
             bw.close();

@@ -7,10 +7,31 @@ hiqri:
     endpoint: /ap
 
 naver:
-  authorization: pAWCuHiyT8O5GKX7xDkz
+  authorization: dToTC2yiTeWRRYJqsDIf
+#  authorization: pAWCuHiyT8O5GKX7xDkz
 kakao:
   apiKey: 6d462d48-cb96-4376-9344-0b8335b3b259
   plusFriendId: '@mtc5azk1njd0y3p'
+
 meta:
-  fbAccessToken: EAAGSZCPZAAhNUBAHPJH6iFJRa8ZAYFAPRZCB7YaMhLyXf4R6MLEiTtFb5KgSLwlN6YXuEO9uGaaCq5XW4zTpsJRwvYt2HNIvKD4CzW06uqivoZAvZB8Rm64qgniuePzYsOU00PSkdHTVEiZAWpLFhoEmnChYNaZBFZAHFmUs4R6vIeYUR6Dg9GshOLvpWjE5j9WWZC4QGwZAXMMNQZDZD
+  fbAccessToken: EAAGSZCPZAAhNUBAHbLuLcyun9kbIbGD9KfdNFZAlVFWJKnODLQx2oxZBJi04SnobCiQPzYD7t4aCCJ6mJ9MwJ4bZCLoWZB2SXwlWY1255ybapdlUPrMCYCTiPD7KQWSeIUC8SfxTYbIuOCK5lB0cz0vQE5gqgnrZCZB6YbhoSq0Nlq3CkZAebqYjheF0EE25kgYAZD
+#  fbAccessToken: EAAGSZCPZAAhNUBAHPJH6iFJRa8ZAYFAPRZCB7YaMhLyXf4R6MLEiTtFb5KgSLwlN6YXuEO9uGaaCq5XW4zTpsJRwvYt2HNIvKD4CzW06uqivoZAvZB8Rm64qgniuePzYsOU00PSkdHTVEiZAWpLFhoEmnChYNaZBFZAHFmUs4R6vIeYUR6Dg9GshOLvpWjE5j9WWZC4QGwZAXMMNQZDZD
   IgAccessToken: EAAGSZCPZAAhNUBAPKLGVn0JX5RZBuzmGKDeO3svXhUmAYwVhGxpI8McZB3R6QC7nRKZCW69TbTMXp7qUG3SbKu2swBD71VAK5eibkInTGk4bLvVUocTEtL5ALOKZA5ZB2de0iaSSmT7BxmDBAgZBdM5IXtwiKiCJue4DbSrTAOAJHB5r0XGWElujTZCbdnNDjLRAatTESjLEthAZDZD
+
+channel:
+  facebook:
+    - name: fbDev
+      description: Development account
+      callback: https://ktcsmw.loca.lt/fb
+      verifyToken: ktcs1234
+      accessToken: EAArg3RqAO5oBANFQ3mmioqRZBTHxTmNC5FToKxpuG1uZATZCPI2e1yHotuYZBxi9X7tbuZBvZAniI4e4qmahV4gYRPUvFyOkmP1ox56ap3ab2Mbw2ZCaauQRgnDlu9xdDe0OUbMG6zI1p4ZAG3jjerZBVKBr78tfDM3guzvkTqhcv1FZBiA4OV2hqkHQT8lhMQKcsZBSwdPOJ7ZANgZDZD
+      page: 102654285787325
+      app: 3061990004112282
+  instagram:
+    - name: igDev
+      description: Development account
+      callback: https://webhook.nak.one/ig
+      verifyToken: ktcs1234
+      accessToken: EAArg3RqAO5oBAMhGz2sWBy0rO2D9z0uEhkVQzTB0RsGMpdLoryJMI3jO9vs9MHXA1vkokxYiFYcX1u3zbyVGsPJwPQn1XsNWEoSrrWZBcDLJ3TO6mBBJO7FCMWI1hHTN5KllNrTHAavfn0kZAISAl9fOd4118IRxClh8ObTWg70SZBh7fR5ZBmWDjiHlnpuxIpBdtXCMnQZDZD
+      page: 102654285787325
+      app: 3061990004112282

@@ -1,4 +1,4 @@
-package aicc.omni.omniconnector.handler.web;
+package aicc.omni.omniconnector.service.web;
 
 import aicc.omni.omniconnector.handler.WebsocketClientHandler;
 import aicc.omni.omniconnector.model.ap.ApWsDto;
@@ -13,11 +13,11 @@ import java.net.URISyntaxException;
 
 @Log4j2
 @Service
-public class WebReceiveMsgHandler {
+public class WebApMsgService {
     @Autowired
     private WebsocketClientHandler websocketClientHandler;
 
-    public void sendToAp(String message) throws URISyntaxException {
+    public String sendToAp(String message) throws URISyntaxException {
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
         Gson gson = builder.create();
@@ -39,11 +39,11 @@ public class WebReceiveMsgHandler {
             obj.addProperty("msgReturnTime", apWsDto.getMsgReturnTime());
 
             // 재빌드 메세지 전송
-            websocketClientHandler.sendMessage(gson.toJson(obj));
+            return gson.toJson(obj);
 
         } else {
             // newEvent 외 받은 메세지를 AP 서버로 전송
-            websocketClientHandler.sendMessage(message);
+            return message;
         }
     }
 }

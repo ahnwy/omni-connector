@@ -1,11 +1,9 @@
-package aicc.ap.omni;
+package aicc.omni.omniconnector.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextListener;
 
 /**
  * @author : 박재형

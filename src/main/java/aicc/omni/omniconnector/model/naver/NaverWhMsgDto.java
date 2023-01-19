@@ -11,7 +11,7 @@ import java.util.List;
 public class NaverWhMsgDto {
 
     // currentTime
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private String currentTime = sdf.format(System.currentTimeMillis());
 
     // ChatBot ==> AP API 전송
@@ -29,7 +29,6 @@ public class NaverWhMsgDto {
     private int statusCode;
     private String msgId;
     private String msgReturnTime;
-
 
     @Data
     @NoArgsConstructor

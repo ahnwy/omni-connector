@@ -1,14 +1,12 @@
-package aicc.omni.omniconnector.service.common;
+package aicc.omni.omniconnector.service.naver;
 
 import aicc.omni.omniconnector.model.ap.ApWsDto;
 import aicc.omni.omniconnector.model.naver.NaverWhMsgDto;
-import aicc.omni.omniconnector.model.origin.OriginInputMsgDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
@@ -17,13 +15,17 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static aicc.omni.omniconnector.handler.WebsocketClientHandler.channelMap;
 import static aicc.omni.omniconnector.handler.WebsocketClientHandler.whUserMap;
 
 @Log4j2
 @Service
-public class ApMsgBuilder {
+public class NaverApMsgBuilder {
+    /*
+        네이버 포맷을 상담AP로 보내기 위한 데이터 빌더
+     */
 
     public String apWebSocketInitMsg(NaverWhMsgDto naverWhMsgDto) throws Exception {
 
@@ -38,7 +40,7 @@ public class ApMsgBuilder {
         msgMap.put("userEmail", "1"); //고정
         msgMap.put("schema", "ap"); //고정
         msgMap.put("corpCode", "CS"); //고정
-        msgMap.put("msgId", null);
+        msgMap.put("msgId", UUID.randomUUID().toString().replace("-", ""));
         msgMap.put("channelSeq", naverWhMsgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
@@ -59,7 +61,7 @@ public class ApMsgBuilder {
         msgMap.put("msgWrtId", "1");
         msgMap.put("schema", "ap"); //고정
         msgMap.put("corpCode", "CS"); //고정
-        msgMap.put("msgId", null);
+        msgMap.put("msgId", naverWhMsgDto.getMessageId());
         msgMap.put("channelSeq", naverWhMsgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
@@ -94,7 +96,6 @@ public class ApMsgBuilder {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msgMap);
         } else {
-//            NAVERHTTPUTIL.sendApi(NaverApiMsgBuilder.sendTextMsg(naverWhMsgDto, "image"));
             return "";
         }
     }

@@ -2,7 +2,6 @@ package aicc.omni.omniconnector.service.meta;
 
 import aicc.omni.omniconnector.handler.WebsocketClientHandler;
 import aicc.omni.omniconnector.model.meta.MetaWhMsgDto;
-import aicc.omni.omniconnector.service.meta.MetaApMsgBuilder;
 import aicc.omni.omniconnector.util.MetaTimeConvertUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import static java.util.Optional.ofNullable;
 
 @Log4j2
 @Service
-public class MetaWhReceiveMsgHandler {
+public class MetaSendApMsgService {
     @Autowired
     private WebsocketClientHandler websocketClientHandler;
 
@@ -78,8 +77,7 @@ public class MetaWhReceiveMsgHandler {
         }
     }
 
-    public void sendToAp(MetaWhMsgDto msgDto) throws Exception {
-        String channelId = msgDto.getChannel();
+    public String sendToAp(MetaWhMsgDto msgDto) throws Exception {
         msgDto.setMessageType(getMessageType(msgDto));
         if (!WebsocketClientHandler.whUserMap.containsKey(msgDto.getPlatformId())) {
             log.info("최초네....");
@@ -88,7 +86,7 @@ public class MetaWhReceiveMsgHandler {
 
         if (msgDto.getMessageType().equals("text")) {
             reservedMsgMap.put(msgDto.getPlatformId(),MetaApMsgBuilder.apWebSocketTextMsg(msgDto));
-            websocketClientHandler.sendMessage(MetaApMsgBuilder.apWebSocketInitMsg(msgDto));
+            return MetaApMsgBuilder.apWebSocketInitMsg(msgDto);
         } else if (msgDto.getMessageType().equals("image")) {
 
         } else if (msgDto.getMessageType().equals("file")) {
@@ -98,5 +96,6 @@ public class MetaWhReceiveMsgHandler {
         } else {
             log.info("없넹...");
         }
+        return "";
     }
 }

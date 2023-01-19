@@ -11,7 +11,6 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -24,21 +23,19 @@ import java.util.Date;
 
 
 @Log4j2
-public class KakaoHttpUtil {
-
-    @Value("${kakao.apiKey}")
-    static String apiKey;
-    @Value("${kakao.plusFriendId}")
-    static String plusFriendId;
+public class KAKAOHTTPUTIL {
+    static String apiKey = "6d462d48-cb96-4376-9344-0b8335b3b259";
+    static String plusFriendId = "@mtc5azk1njd0y3p";
     static String testServerUrl = "https://italk-vir.ibizplus.co.kr:8443/";
     static String serviceServerUrl = "https://italk-api.ibizplus.co.kr:8443/";
 
-    public static void sendMsg(String json, String path) {
+    public static void sendMsg(String json) {
 
         HttpURLConnection conn;
 
         log.info("▶▶▶ HTTPS_CONNECTION Created");
         try {
+            String path = "/chat_write2";
             URL url = new URL(testServerUrl+"rs/v1/"+plusFriendId+path);
             log.info(url);
             conn = (HttpsURLConnection) url.openConnection();

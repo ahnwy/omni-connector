@@ -40,10 +40,6 @@ public class MetaWhMsgDto {
             private Account_linkingItem account_linking;
             private PostbackItem postback;
             private DeliveryItem delivery;
-//            private Pass_thread_controlItem pass_thread_control; //thread control 관련 일단 제외
-//            private Take_thread_controlItem take_thread_control;
-//            private Request_thread_controlItem request_thread_control;
-//            private App_rolesItem app_roles;
 
             @Data
             public static class SenderItem {
@@ -165,27 +161,5 @@ public class MetaWhMsgDto {
                 private String mids;
             }
         }
-//        @Data
-//        public static class Pass_thread_controlItem {
-//            private String previous_owner_app_id;
-//            private String new_owner_app_id;
-//            private String metadata;
-//        }
-//        @Data
-//        public static class Take_thread_controlItem {
-//            private String previous_owner_app_id;
-//            private String new_owner_app_id;
-//            private String metadata;
-//        }
-//        @Data
-//        public static class Request_thread_controlItem {
-//            private String request_owner_app_id;
-//            private String metadata;
-//        }
-//        @Data
-//        public static class App_rolesItem {
-//            private String app_id;
-//            private String metadata;
-//        }
     }
 }

@@ -3,18 +3,20 @@ package aicc.omni.omniconnector.service.kakao;
 import aicc.omni.omniconnector.handler.WebsocketClientHandler;
 import aicc.omni.omniconnector.model.kakao.KakaoWhMsgDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class KakaoApMsgBuilder {
 
-    public static String apWebSocketInitMsg(KakaoWhMsgDto whMsgDto) throws Exception {
+    public String apWebSocketInitMsg(KakaoWhMsgDto whMsgDto) throws Exception {
 
         Map<String, String> msgMap = new HashMap<>(10);
 
         msgMap.put("msgSeq", "unknown");
-        msgMap.put("platformID", whMsgDto.getPlatformId());
+        msgMap.put("platformID", whMsgDto.getUser_key());
         msgMap.put("msg", "VISIT"); // 고정
         msgMap.put("openFlag", "newEvent");
         msgMap.put("userName", whMsgDto.getUser_key());
@@ -23,17 +25,18 @@ public class KakaoApMsgBuilder {
         msgMap.put("schema", "ap"); //고정
         msgMap.put("corpCode", "CS"); //고정
         msgMap.put("msgId", whMsgDto.getUuid());
+        msgMap.put("channelSeq", whMsgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msgMap);
     }
 
-    public static String apWebSocketTextMsg(KakaoWhMsgDto whMsgDto) throws Exception {
+    public String apWebSocketTextMsg(KakaoWhMsgDto whMsgDto) throws Exception {
 
         Map<String, String> msg = new HashMap<>(9);
 
         msg.put("mode", "total"); // 고정
-        msg.put("msgSeq", WebsocketClientHandler.whUserMap.get(whMsgDto.getPlatformId()));
+        msg.put("msgSeq", WebsocketClientHandler.whUserMap.get(whMsgDto.getUser_key()));
         msg.put("msg", whMsgDto.getContent());
         msg.put("msgContentType", "text"); // 고정
         msg.put("msgWrtTime", whMsgDto.getFormattedDate());
@@ -41,17 +44,19 @@ public class KakaoApMsgBuilder {
         msg.put("schema", "ap"); //고정
         msg.put("corpCode", "CS"); //고정
         msg.put("msgId", whMsgDto.getUuid());
+        msg.put("channelSeq", whMsgDto.getChannel());
+
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msg);
     }
 
-    public static String apWebSocketImageMsg(KakaoWhMsgDto whMsgDto) throws Exception {
+    public String apWebSocketImageMsg(KakaoWhMsgDto whMsgDto) throws Exception {
 
         Map<String, Object> msg = new HashMap<>(13);
 
         msg.put("mode", "total"); // 고정
-        msg.put("msgSeq", WebsocketClientHandler.whUserMap.get(whMsgDto.getPlatformId()));
+        msg.put("msgSeq", WebsocketClientHandler.whUserMap.get(whMsgDto.getUser_key()));
         msg.put("msg", whMsgDto.getFileUrl()); // filePath와 동일 내용임(AP 요청사항)
         msg.put("msgContentType", "image"); // 고정
         msg.put("filePath", whMsgDto.getFileUrl());
@@ -63,12 +68,13 @@ public class KakaoApMsgBuilder {
         msg.put("schema", "ap"); //고정
         msg.put("corpCode", "CS"); //고정
         msg.put("msgId", whMsgDto.getUuid());
+        msg.put("channelSeq", whMsgDto.getChannel());
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(msg);
     }
 
-    public static String apWebSocketEndMsg(KakaoWhMsgDto whMsgDto) throws Exception {
+    public String apWebSocketEndMsg(KakaoWhMsgDto whMsgDto) throws Exception {
 
         Map<String, String> msgMap = new HashMap<>(14);
 
